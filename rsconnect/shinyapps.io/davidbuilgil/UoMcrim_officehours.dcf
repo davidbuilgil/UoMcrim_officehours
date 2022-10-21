@@ -5,9 +5,9 @@ account: davidbuilgil
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 7375760
-bundleId: 6426811
+bundleId: 6427234
 url: https://davidbuilgil.shinyapps.io/UoMcrim_officehours/
-when: 1666356463.81261
-lastSyncTime: 1666356463.81262
+when: 1666364629.61859
+lastSyncTime: 1666364629.6186
 asMultiple: FALSE
 asStatic: FALSE
