@@ -36,7 +36,9 @@ df <- df %>%
   rename(Staff_name = `Staff name`) %>%
   select(-`Helper Column 1`,
          -`Helper Column Staff name`,
-         -`Helper Column 2`)
+         -`Helper Column 2`) %>%
+  mutate(Unit = gsub(" ", "", Unit)) %>%
+  filter(!is.na(Office))
 
 # Unique dataset of names of staff and units
 staff <- unique(df$Staff_name)
@@ -71,7 +73,7 @@ ui <- fluidPage(
   ),
   # Create a new row for the table.
   DT::dataTableOutput("table"),
-  verbatimTextOutput("text")
+  #verbatimTextOutput("text")
 )
 
 server <- function(input, output) {
@@ -94,7 +96,10 @@ server <- function(input, output) {
   })
   
   # Show filtered data in the datatable
-  output$table <- DT::renderDataTable(DT::datatable({ filtered_rows()}))
+  output$table <- DT::renderDataTable(DT::datatable({ filtered_rows()}, 
+                                                    options = list(dom = 'tip',
+                                                                   language = list(
+                                                                     zeroRecords = "Please select a member of the staff and/or unit."))))
   
   # Show selected text
   output$text <- renderText({ toString(filtered_rows()[input$table_rows_selected, c("Staff_name", "Unit")]) })
