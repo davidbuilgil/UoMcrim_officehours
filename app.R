@@ -40,19 +40,15 @@ df <- df %>%
 
 # Unique dataset of names of staff and units
 staff <- unique(df$Staff_name)
+staff <- sort(staff)
 unit <- unique(df$Unit)
 unit <- unit[!is.na(unit)]
+unit <- sort(unit)
 
 # Define Criminology UoM app ----
 
 ui <- fluidPage(
-  #titlePanel(title = "Criminology@UoM office hours"),
-   
-  #titlePanel( div(column(width = 6, h2("Criminology@UoM office hours")), 
-  #                column(width = 1, tags$img(src = "logo.JPG"))),
-  #            windowTitle="MyPage"
-  #),
-  
+
   titlePanel(title = span(img(src = "logo.JPG", height = 35), "Department of Criminology - Office hours"),
              windowTitle = "Crim@UoM office hours"),
   
@@ -89,20 +85,20 @@ server <- function(input, output) {
     if (input$Unit != "All") {
       data <- data[data$Unit == input$Unit,]
     }
-    if (!is.na(input$Unit)) {
+    if (!is.na(input$Staff_name) & !is.na(input$Unit)) {
       data <- data %>% 
-        filter(data$Unit == input$Unit)
+        filter(data$Staff_name == input$Staff_name | 
+        data$Unit == input$Unit)
     }
     data
   })
   
   # Show filtered data in the datatable
-  output$table <- DT::renderDataTable(DT::datatable({ filtered_rows() }))
+  output$table <- DT::renderDataTable(DT::datatable({ filtered_rows()}))
   
   # Show selected text
   output$text <- renderText({ toString(filtered_rows()[input$table_rows_selected, c("Staff_name", "Unit")]) })
   
 }
-
 
 shinyApp(ui, server)
