@@ -89,6 +89,10 @@ server <- function(input, output) {
     if (input$Unit != "All") {
       data <- data[data$Unit == input$Unit,]
     }
+    if (!is.na(input$Unit)) {
+      data <- data %>% 
+        filter(data$Unit == input$Unit)
+    }
     data
   })
   
